@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:webapps_assignment/controller/music_controller.dart';
+import 'package:webapps_assignment/widget/music_top_card.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
+import '../widget/bottom_navigation_bar.dart';
 import '../widget/common_widget.dart';
 import 'package:get/get.dart';
+
+import '../widget/container_box.dart';
+import '../widget/music_card.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -87,81 +92,7 @@ class MainScreen extends StatelessWidget {
                         itemCount: 3,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (ctx, index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 12),
-                            height: 150,
-                            width: 245,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                30,
-                              ),
-                              image: const DecorationImage(
-                                  image: NetworkImage(testImage)),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                    top: 25,
-                                    left: 180,
-                                  ),
-                                  child: const Icon(
-                                    Icons.more_horiz,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                    top: 42,
-                                  ),
-                                  width: 235,
-                                  height: 65,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      20,
-                                    ),
-                                    gradient: const LinearGradient(
-                                      colors: [card1, card2],
-                                    ),
-                                  ),
-                                  child: ListTile(
-                                    title: text(
-                                      textAlign: TextAlign.start,
-                                      text: "The Dark Side",
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    subtitle: Row(
-                                      children: [
-                                        const Icon(
-                                          Iconsax.music4,
-                                          color: Colors.white,
-                                          size: 12,
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        text(
-                                          text: "Muse - Simulation Theory",
-                                          color: Colors.white30,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ],
-                                    ),
-                                    trailing: const CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      child: Icon(
-                                        Iconsax.play5,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
+                          return MusicTopCard();
                         }),
                   ),
                   const SizedBox(
@@ -173,25 +104,7 @@ class MainScreen extends StatelessWidget {
                       itemCount: 5,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (ctx, index) {
-                        return Container(
-                          width: 130,
-                          height: 30,
-                          margin: const EdgeInsets.symmetric(horizontal: 12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: const LinearGradient(
-                              colors: [card1, card2],
-                            ),
-                          ),
-                          child: Center(
-                            child: text(
-                              text: "Trending right now",
-                              color: Colors.grey,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        );
+                        return containerBox();
                       },
                     ),
                   ),
@@ -205,51 +118,10 @@ class MainScreen extends StatelessWidget {
                         return ListView.builder(
                             itemCount: musicController.musics.length,
                             itemBuilder: (ctx, index) {
-                              print(musicController.musics[index].title);
                               final musciModel = musicController.musics[index];
                               return Container(
                                 margin: const EdgeInsets.only(bottom: 15),
-                                child: ListTile(
-                                  dense: false,
-                                  leading: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.network(
-                                      musciModel.url ?? testImage,
-                                      width: 85,
-                                    ),
-                                  ),
-                                  title: text(
-                                    textAlign: TextAlign.start,
-                                    text: musciModel.title ?? "text",
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  subtitle: Row(
-                                    children: [
-                                      const Icon(
-                                        Iconsax.user,
-                                        color: Colors.grey,
-                                        size: 13,
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      text(
-                                        textAlign: TextAlign.start,
-                                        text: musciModel.artist ??
-                                            "David Guetta & Bebe Rexha",
-                                        color: Colors.grey,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: const Icon(
-                                    Iconsax.heart,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                child: musicCard(musciModel),
                               );
                             });
                       },
@@ -262,43 +134,7 @@ class MainScreen extends StatelessWidget {
           Positioned.fill(
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.only(
-                  bottom: 25,
-                ),
-                width: 350,
-                height: 75,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(22),
-                  color: bottomNavigationBox.withOpacity(0.95),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Icon(
-                      Iconsax.home,
-                      color: Colors.white,
-                      size: 27,
-                    ),
-                    Icon(
-                      Iconsax.search_normal,
-                      color: Colors.white,
-                      size: 27,
-                    ),
-                    Icon(
-                      Iconsax.music,
-                      color: Colors.white,
-                      size: 27,
-                    ),
-                    Icon(
-                      Iconsax.user,
-                      color: Colors.white,
-                      size: 27,
-                    )
-                  ],
-                ),
-              ),
+              child: botomNav(),
             ),
           )
         ],
